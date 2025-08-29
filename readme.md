@@ -12,7 +12,6 @@ Answer:
 
 
 
-
 2.How do you create and insert a new element into the DOM?
 
  Answer:
@@ -27,6 +26,7 @@ document.body.appendChild(para);
 
 
 3. What is Event Bubbling and how does it work?
+
  Answer:
  Event Bubbling means when you click on a small element, the click also goes to its parent elements. For example, if you click a button inside a div, first the button gets the click, then the div, then the body. The event “bubbles up” from child to parent automatically.
 
@@ -34,6 +34,7 @@ document.body.appendChild(para);
 
 
 4. What is Event Delegation in JavaScript? Why is it useful?
+
  Answer:
  Event Delegation means we put one event listener on a parent element instead of adding listeners to many child elements. When a child is clicked, the parent detects it and runs the code. This is useful because we don’t need many listeners, it saves memory, and it works even for new elements added later.
 
