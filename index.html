@@ -89,7 +89,7 @@
       <p class="badge badge-outline">All</p>
     </div>
     <!-- Buttons -->
-    <div class="flex justify-between items-center mt-4">
+    <div class="flex justify-between items-center mt-4 ">
       <button class="btn btn-outline btn-sm w-1/2 mr-2">
         <i class="fas fa-copy mr-2"></i> Copy
       </button>
@@ -123,7 +123,7 @@
       <p class="badge badge-outline">Police</p>
     </div>
     <!-- Buttons -->
-    <div class="flex justify-between items-center mt-4">
+     <div class="flex justify-between items-center mt-4">
       <button class="btn btn-outline btn-sm w-1/2 mr-2">
         <i class="fas fa-copy mr-2"></i> Copy
       </button>
@@ -441,7 +441,8 @@ callBtns.forEach(btn=>{
 
         alert(`Calling ${name} at ${num}`);
 
-        let time = new Date().toLocaleTimeString();
+        let time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+
         let li = document.createElement("li");
         li.className = "bg-green-100 px-3 py-2 rounded-md shadow-sm flex justify-between items-center";
         li.innerHTML = `
