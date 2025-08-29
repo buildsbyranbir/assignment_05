@@ -360,99 +360,86 @@
           <div class="w-72 bg-white shadow-md rounded-md p-4">
       <div class="flex justify-between items-center mb-2">
         <h2 class="font-bold">Call History</h2>
-        <button id="clearHistory" class="btn btn-xs btn-error">Clear</button>
+        <button id="clearHistory" class="btn btn-xs bg-[green]">Clear</button>
       </div>
       <ul id="historyList" class="space-y-2 text-sm"></ul>
     </div>
        </section>
 
 
-                 <script>
-// ============ DOM Elements ===============
-const heartIcons = document.querySelectorAll(".card .fa-heart");
-const heartCounter = document.querySelector(".navbar span i.fa-heart").parentNode;
-const copyButtons = document.querySelectorAll(".card button.btn-outline");
-const callButtons = document.querySelectorAll(".card .btn-success");
-const copyCountBtn = document.querySelector(".navbar button");
-const historyList = document.getElementById("historyList");
-const clearHistoryBtn = document.getElementById("clearHistory");
-const coinElement = document.querySelector(".navbar span img").parentNode;
+       <script>
+// ==== Select all needed elements ====
+let heartIcons   = document.querySelectorAll(".card .fa-heart");
+let heartBox     = document.querySelector(".navbar span i.fa-heart").parentNode;
+let copyBtns     = document.querySelectorAll(".card button.btn-outline");
+let callBtns     = document.querySelectorAll(".card .btn-success");
+let copyCountBtn = document.querySelector(".navbar button");
+let historyList  = document.getElementById("historyList");
+let clearBtn     = document.getElementById("clearHistory");
+let coinBox      = document.querySelector(".navbar span img").parentNode;
+
+// ==== Default values ====
 let coins = 100;
 let heartCount = 0;
 let copyCount = 0;
 
 
-// =========== HEART ICON FUNCTIONALITY ============
-heartIcons.forEach((icon) => {
-    icon.addEventListener("click", () => {
+// ==== Heart icon click ====
+heartIcons.forEach(icon=>{
+    icon.addEventListener("click", ()=>{
         heartCount++;
-        heartCounter.innerHTML = `${heartCount} <i class="fa-solid fa-heart" style="color: #ED1C24;"></i>`;
-    });
-});
+        heartBox.innerHTML = `${heartCount} <i class="fa-solid fa-heart" style="color:#ED1C24;"></i>`;
+    })
+})
 
+// ==== Copy button click ====
+copyBtns.forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+        let number = btn.closest(".card").querySelector("p.font-bold").innerText;
+        navigator.clipboard.writeText(number).then(()=>{
+            copyCount++;
+            copyCountBtn.innerText = `${copyCount} Copy`;
+            alert(`${number} copied`);
+        })
+    })
+})
 
-// ========= COPY BUTTON FUNCTIONALITY =============
-copyButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-        const phoneNumber = button.closest(".card").querySelector("p.text-4xl").innerText;
-        navigator.clipboard.writeText(phoneNumber)
-            .then(() => {
-                copyCount++;
-                copyCountBtn.innerText = `${copyCount} Copy`;
-                alert(`Number ${phoneNumber} copied successfully!`);
-            })
-            .catch(() => {
-                alert("Failed to copy the number!");
-            });
-    });
-});
-
-
-// =========== CALL BUTTON FUNCTIONALITY ============
-callButtons.forEach((button) => {
-    button.addEventListener("click", (e) => {
+// ==== Call button click ====
+callBtns.forEach(btn=>{
+    btn.addEventListener("click",(e)=>{
         e.preventDefault();
 
-        const card = button.closest(".card");
-        const serviceName = card.querySelector("h2").innerText;
-        const phoneNumber = card.querySelector("p.text-4xl").innerText;
+        let card  = btn.closest(".card");
+        let name  = card.querySelector("h2").innerText;
+        let num   = card.querySelector("p.font-bold").innerText;
 
-
-        // Check Coins
-        if (coins < 20) {
-            alert("You don't have enough coins to make a call!");
+        if(coins < 20){
+            alert("Not enough coins!");
             return;
         }
 
-        // Deduct Coins
         coins -= 20;
-        coinElement.innerHTML = `${coins} <img src="B12-A5-Emergency-Hotline/assets/coin.png" alt="coin" class="w-4 h-4">`;
+        coinBox.innerHTML = `${coins} <img src="B12-A5-Emergency-Hotline/assets/coin.png" class="w-4 h-4">`;
 
-        // Show Alert
-        alert(`Calling ${serviceName} at ${phoneNumber}`);
+        alert(`Calling ${name} at ${num}`);
 
-        // Add Call History
-        const time = new Date();
-        const currentTime = time.toLocaleTimeString();
-        const li = document.createElement("li");
+        let time = new Date().toLocaleTimeString();
+        let li = document.createElement("li");
         li.className = "bg-green-100 px-3 py-2 rounded-md shadow-sm flex justify-between items-center";
         li.innerHTML = `
-            <span>
-                <strong>${serviceName}</strong> <br>
-                ${phoneNumber}
-            </span>
-            <span class="text-xs text-gray-600">${currentTime}</span>
+            <span><strong>${name}</strong><br>${num}</span>
+            <span class="text-xs text-gray-600">${time}</span>
         `;
         historyList.appendChild(li);
-    });
-});
+    })
+})
 
-// ============ CLEAR HISTORY ================
-clearHistoryBtn.addEventListener("click", () => {
+// ==== Clear history button ====
+clearBtn.addEventListener("click", ()=>{
     historyList.innerHTML = "";
-});
-
+})
 </script>
+
 
 </body>
 </html>
