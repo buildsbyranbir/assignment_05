@@ -367,6 +367,92 @@
        </section>
 
 
+                 <script>
+// ============ DOM Elements ===============
+const heartIcons = document.querySelectorAll(".card .fa-heart");
+const heartCounter = document.querySelector(".navbar span i.fa-heart").parentNode;
+const copyButtons = document.querySelectorAll(".card button.btn-outline");
+const callButtons = document.querySelectorAll(".card .btn-success");
+const copyCountBtn = document.querySelector(".navbar button");
+const historyList = document.getElementById("historyList");
+const clearHistoryBtn = document.getElementById("clearHistory");
+const coinElement = document.querySelector(".navbar span img").parentNode;
+let coins = 100;
+let heartCount = 0;
+let copyCount = 0;
+
+
+// =========== HEART ICON FUNCTIONALITY ============
+heartIcons.forEach((icon) => {
+    icon.addEventListener("click", () => {
+        heartCount++;
+        heartCounter.innerHTML = `${heartCount} <i class="fa-solid fa-heart" style="color: #ED1C24;"></i>`;
+    });
+});
+
+
+// ========= COPY BUTTON FUNCTIONALITY =============
+copyButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        const phoneNumber = button.closest(".card").querySelector("p.text-4xl").innerText;
+        navigator.clipboard.writeText(phoneNumber)
+            .then(() => {
+                copyCount++;
+                copyCountBtn.innerText = `${copyCount} Copy`;
+                alert(`Number ${phoneNumber} copied successfully!`);
+            })
+            .catch(() => {
+                alert("Failed to copy the number!");
+            });
+    });
+});
+
+
+// =========== CALL BUTTON FUNCTIONALITY ============
+callButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const card = button.closest(".card");
+        const serviceName = card.querySelector("h2").innerText;
+        const phoneNumber = card.querySelector("p.text-4xl").innerText;
+
+
+        // Check Coins
+        if (coins < 20) {
+            alert("You don't have enough coins to make a call!");
+            return;
+        }
+
+        // Deduct Coins
+        coins -= 20;
+        coinElement.innerHTML = `${coins} <img src="B12-A5-Emergency-Hotline/assets/coin.png" alt="coin" class="w-4 h-4">`;
+
+        // Show Alert
+        alert(`Calling ${serviceName} at ${phoneNumber}`);
+
+        // Add Call History
+        const time = new Date();
+        const currentTime = time.toLocaleTimeString();
+        const li = document.createElement("li");
+        li.className = "bg-green-100 px-3 py-2 rounded-md shadow-sm flex justify-between items-center";
+        li.innerHTML = `
+            <span>
+                <strong>${serviceName}</strong> <br>
+                ${phoneNumber}
+            </span>
+            <span class="text-xs text-gray-600">${currentTime}</span>
+        `;
+        historyList.appendChild(li);
+    });
+});
+
+// ============ CLEAR HISTORY ================
+clearHistoryBtn.addEventListener("click", () => {
+    historyList.innerHTML = "";
+});
+
+</script>
 
 </body>
 </html>
